@@ -33,7 +33,7 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.metrics import classification_report
 
-# from sklearn.utils import parallel_backend
+from sklearn.utils import parallel_backend
 
 def load_data(database_filepath):
     # load data from database
@@ -58,18 +58,10 @@ def tokenize(text):
 
 def build_model():
     # pipeline = Pipeline([
-    #         ('vect', CountVectorizer(tokenizer=tokenize)),
-    #         ('tfidf',TfidfTransformer()),
+    #         ('vect', CountVectorizer(tokenizer=tokenize, max_df=0.75)),
+    #         ('tfidf',TfidfTransformer(use_idf=True)),
     #         ('clf', MultiOutputClassifier(RandomForestClassifier(n_jobs=1)))
     # ])
-
-    # knn = KNeighborsClassifier()
-
-    pipeline2 = Pipeline([
-            ('vect', CountVectorizer(tokenizer=tokenize)),
-            ('tfidf',TfidfTransformer()),
-            ('clf', MultiOutputClassifier(KNeighborsClassifier()))
-    ])
 
         #'vect__ngram_range': ((1, 1), (1, 2)),
     # parameters = {
@@ -77,6 +69,17 @@ def build_model():
     #     'tfidf__use_idf': (True, False),
     # }
 
+    # cv = GridSearchCV(pipeline, param_grid=parameters, verbose=3, n_jobs=1)
+
+
+    # knn = KNeighborsClassifier()
+    #
+
+    pipeline2 = Pipeline([
+            ('vect', CountVectorizer(tokenizer=tokenize, max_df=0.5)),
+            ('tfidf',TfidfTransformer(use_idf=True)),
+            ('clf', MultiOutputClassifier(KNeighborsClassifier(n_neighbors=3)))
+    ])
 
     parameters2 = {
         'vect__max_df': (0.5, 0.75, 1.0),
@@ -84,10 +87,11 @@ def build_model():
         'clf__estimator__n_neighbors': (3, 7, 11, 13 ),
     }
 
-    # cv = GridSearchCV(pipeline, param_grid=parameters, verbose=3, n_jobs=1)
-    cv = GridSearchCV(pipeline2, param_grid=parameters2, verbose=3, n_jobs=1)
+    # cv = GridSearchCV(pipeline2, param_grid=parameters2, verbose=3, n_jobs=1)
 
-    return cv #pipeline
+    # return cv #pipeline
+    # return pipeline
+    return pipeline2
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
@@ -112,7 +116,7 @@ def main():
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
 
-#         with parallel_backend('multiprocessing'):
+        # with parallel_backend('multiprocessing'):
         start_time = time.time()
 
         print('Building model...')
@@ -133,7 +137,7 @@ def main():
         end_time = time.time()
         elapased_time(start_time, end_time)
 
-        print('cv best param = ', model.best_params_)
+            # print('model best param = ', model.best_params_)
 
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)
