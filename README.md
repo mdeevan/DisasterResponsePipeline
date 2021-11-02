@@ -12,3 +12,7 @@
     `python run.py`
 
 3. Go to http://0.0.0.0:3001/
+
+Please note:
+Due to the size of the pkl file, it is not added to the project. ML pipeline needs to be executed to generate the required classifier.pkl, and it takes a little while to execute
+
