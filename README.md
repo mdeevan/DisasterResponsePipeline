@@ -3,9 +3,10 @@
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
 
-    - To run ETL pipeline that cleans data and stores in database
+    - To run ETL pipeline that cleans data and stores in database  
         `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
-    - To run ML pipeline that trains classifier and saves
+        
+    - To run ML pipeline that trains classifier and saves  
         `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
 
 2. Run the following command in the app's directory to run your web app.
@@ -13,6 +14,6 @@
 
 3. Go to http://0.0.0.0:3001/
 
-Please note:
+#### Please note:  
 Due to the size of the pkl file, it is not added to the project. ML pipeline needs to be executed to generate the required classifier.pkl, and it takes a little while to execute
 
