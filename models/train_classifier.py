@@ -36,17 +36,39 @@ from sklearn.metrics import classification_report
 from sklearn.utils import parallel_backend
 
 def load_data(database_filepath):
+    """load sqllite database from the specified file path
+	
+    Parameters:
+    database_filepath (str): filesystem file path along with the name of the sqllite database to load
+      
+    Returns:
+    X (dataframe) : feature set, a single column from the database containing the messages
+    y (dataframe) : multiclass output labels in binary form
+	category_names (list) : list of category variables corresponding to the multiclass output labels (y)
+    
+    
+    """
     # load data from database
     engine = create_engine(os.path.join('sqlite:///', database_filepath))
     df = pd.read_sql_table('DisasterResponse', con=engine)
     X = df[df.columns[1]]
     y = df[df.columns[5:]]
     category_names = df.columns[5:]
-
+    
     return X, y, category_names
 
 
 def tokenize(text):
+    """tokenize the text 
+	
+    Parameters:
+    text (str): text string to tokenize
+      
+    Returns:
+    clean_tokens (list) : return the list of the clean token by lemmatizing the word, and removing stop words
+   
+    
+    """
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
     stop_words = stopwords.words("english")
@@ -57,6 +79,18 @@ def tokenize(text):
 
 
 def build_model():
+    """build the model and return a GridSearchCV classifier
+    Create a pipeline to vectorize, tfidf transformer, and a classifer,
+    specify hyperparameters for GridsearchCV
+	
+    Parameters:
+    none
+      
+    Returns:
+    classifier: GridSearchCV classifer that will be used to train the model
+    
+    
+    """
     # pipeline = Pipeline([
     #         ('vect', CountVectorizer(tokenizer=tokenize, max_df=0.75)),
     #         ('tfidf',TfidfTransformer(use_idf=True)),
@@ -87,29 +121,78 @@ def build_model():
         'clf__estimator__n_neighbors': (3, 7, 11, 13 ),
     }
 
-    # cv = GridSearchCV(pipeline2, param_grid=parameters2, verbose=3, n_jobs=1)
+    cv = GridSearchCV(pipeline2, param_grid=parameters2, verbose=3, n_jobs=1)
 
-    # return cv #pipeline
+    return cv #pipeline
     # return pipeline
-    return pipeline2
+    # return pipeline2
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """Evaluate the model and print the classification report
+	
+    Parameters:
+    model : Model to evaluate
+    X_Test (dataframe): feature set in a dataframe to test the model performance
+    Y_Test (dataframe): Multiclass labels to compare against the model's predicted value
+    category_names (list): list of Multiclass labels to print in the classification report
+      
+    Returns:
+    none
+    
+    
+    """
     Y_pred = model.predict(X_test)
     print(classification_report(Y_test.values[:,], Y_pred, target_names=category_names))
 
 
 def save_model(model, model_filepath):
+    """Save the model in a pickle file at specified folder location
+	
+    Parameters:
+    model: Model to save as a pickle file
+    model_filepath: folder location where the pickle file will be save
+      
+    Returns:
+    None
+    
+    
+    """
+
     pickle.dump(model, open(model_filepath, 'wb'))
 
 def elapased_time(start_time, end_time):
-
+    """helper function to display the time elapsed 
+	
+    Parameters:
+    start_time (time): starting time
+    end_time (time):ending time
+      
+    Returns:
+    None
+    
+    
+    """
     hours, rem = divmod(end_time - start_time, 3600)
     minutes, seconds = divmod(rem, 60)
     print("Time-elapsed --> {:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
 
 
 def main():
+    """Main function, entry point, for the module
+    This is to build a model, train the model and save the model in the Pickle file
+	
+    Parameters:
+    database (db) : name and path of the sqllite database file
+    pickle : filepath of the pickle file to save the model
+
+      
+    Returns:
+    classifier: GridSearchCV classifer that will be used to train the model
+    
+    
+    """
+
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
