@@ -86,7 +86,7 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
-    """convert the dataframe into a sqllite DB and save in the filesystem
+    """convert the dataframe into a sqllite DB and save as a filesystem DB file
 
 	
     Parameters:
@@ -99,11 +99,25 @@ def save_data(df, database_filename):
     
     """
     engine = create_engine(os.path.join('sqlite:///', database_filename))
-    df.to_sql('DisasterResponse', engine, index=False)
+    df.to_sql('DisasterResponse', engine, if_exists='replace', index=False)
 
 
 
 def main():
+    """module to read in the categories and messages csv formatted file, join them, clean them and save to a filesystem
+
+	
+    Parameters:
+    messages file (str): name of the file, along with the path, containing the messages in a csv format
+    categories file (str): name of the file, along with the path, containing the categories in a csv format
+    db_name (str): name of the DB file, laong with the path, where to save the cleaned data as sqllite DB
+      
+    Returns:
+	N/A
+    
+    
+    """
+
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
