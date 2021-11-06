@@ -20,8 +20,8 @@ Web application that reads in the pickle file and categorizes it the message int
 Following packages are required  
 By using pip3 or yum as follows, install the following packages  
 
-pip3 install <package name>
-yum install <package name>
+pip3 install <package name>  
+yum install <package name>  
 
 
 nltk  
