@@ -60,20 +60,8 @@ def clean_data(df):
 
 
     for column in categories:
-        # set each value to be the last character of the string
-        # val = (categories[column].str[-1:]).astype(int)
-        
-        val = (categories[column].str[-1:]).apply(lambda x: 0 if (x == 0) else 1)
+    	categories[column] = categories[column].str[-1:].apply(lambda x: 0 if (x == "0") else 1)
 
-		# specifically for the related column there are number of rows where the count is 2
-		# this is to conver a value greater than 1 to 1, and applies to all columns
-
-		# val = cat[column].str[-1:].apply(lambda x: 0 if (x == 0) else 1)
-
-        categories[column] = val  # categories[column].str[-1:]
-
-        # convert column from string to numeric
-        categories[column] = categories[column].astype(int)
 
     # drop the original categories column from `df`
     df.drop(['categories'],axis=1, inplace=True)

@@ -115,10 +115,14 @@ def build_model():
             ('clf', MultiOutputClassifier(KNeighborsClassifier(n_neighbors=3)))
     ])
 
+    #    'vect__max_df': (0.5, 0.75, 1.0),
+    #    'tfidf__use_idf': (True False),
+    #    'clf__estimator__n_neighbors': (3, 7, 11, 13 ),
+
     parameters2 = {
-        'vect__max_df': (0.5, 0.75, 1.0),
+        'vect__max_df': (0.50, 0.75),
         'tfidf__use_idf': (True, False),
-        'clf__estimator__n_neighbors': (3, 7, 11, 13 ),
+        'clf__estimator__n_neighbors': (3,7),
     }
 
     cv = GridSearchCV(pipeline2, param_grid=parameters2, verbose=3, n_jobs=1)
