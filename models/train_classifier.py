@@ -91,41 +91,44 @@ def build_model():
     
     
     """
-    # pipeline = Pipeline([
-    #         ('vect', CountVectorizer(tokenizer=tokenize, max_df=0.75)),
-    #         ('tfidf',TfidfTransformer(use_idf=True)),
-    #         ('clf', MultiOutputClassifier(RandomForestClassifier(n_jobs=1)))
-    # ])
+    pipeline = Pipeline([
+            ('vect', CountVectorizer(tokenizer=tokenize, max_df=0.75)),
+            ('tfidf',TfidfTransformer(use_idf=True)),
+            ('clf', MultiOutputClassifier(RandomForestClassifier()))
+    ])
 
-        #'vect__ngram_range': ((1, 1), (1, 2)),
-    # parameters = {
-    #     'vect__max_df': (0.5, 0.75, 1.0),
-    #     'tfidf__use_idf': (True, False),
-    # }
+    # vect__ngram_range': ((1, 1), (1, 2)),
+    # 'vect__max_df': (0.5, 0.75, 1.0),
+    # 'tfidf__use_idf': (True, False),
 
-    # cv = GridSearchCV(pipeline, param_grid=parameters, verbose=3, n_jobs=1)
+    parameters = {
+        'vect__ngram_range': ((1, 1), (1, 2)),
+    }
+
+
+    cv = GridSearchCV(pipeline, param_grid=parameters, verbose=3, n_jobs=1)
 
 
     # knn = KNeighborsClassifier()
     #
 
-    pipeline2 = Pipeline([
-            ('vect', CountVectorizer(tokenizer=tokenize, max_df=0.5)),
-            ('tfidf',TfidfTransformer(use_idf=True)),
-            ('clf', MultiOutputClassifier(KNeighborsClassifier(n_neighbors=3)))
-    ])
+    #pipeline2 = Pipeline([
+    #        ('vect', CountVectorizer(tokenizer=tokenize, max_df=0.5)),
+    #        ('tfidf',TfidfTransformer(use_idf=True)),
+    #        ('clf', MultiOutputClassifier(KNeighborsClassifier(n_neighbors=3)))
+    #])
 
     #    'vect__max_df': (0.5, 0.75, 1.0),
     #    'tfidf__use_idf': (True False),
     #    'clf__estimator__n_neighbors': (3, 7, 11, 13 ),
 
-    parameters2 = {
-        'vect__max_df': (0.50, 0.75),
-        'tfidf__use_idf': (True, False),
-        'clf__estimator__n_neighbors': (3,7),
-    }
+    #parameters2 = {
+    #    'vect__max_df': (0.50, 0.75),
+    #    'tfidf__use_idf': (True, False),
+    #    'clf__estimator__n_neighbors': (1,3),
+    #}
 
-    cv = GridSearchCV(pipeline2, param_grid=parameters2, verbose=3, n_jobs=1)
+    #cv = GridSearchCV(pipeline2, param_grid=parameters2, verbose=3, n_jobs=1)
 
     return cv #pipeline
     # return pipeline
@@ -224,12 +227,12 @@ def main():
         end_time = time.time()
         elapased_time(start_time, end_time)
 
-            # print('model best param = ', model.best_params_)
-
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)
 
         print('Trained model saved!')
+
+        print('model best param = ', model.best_params_)
 
     else:
         print('Please provide the filepath of the disaster messages database '\

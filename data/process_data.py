@@ -61,7 +61,7 @@ def clean_data(df):
 
     for column in categories:
     	categories[column] = categories[column].str[-1:].apply(lambda x: 0 if (x == "0") else 1)
-
+	
 
     # drop the original categories column from `df`
     df.drop(['categories'],axis=1, inplace=True)

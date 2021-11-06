@@ -8,6 +8,9 @@ from nltk.tokenize import word_tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
+import plotly.express as px
+
+
 #from sklearn.externals import joblib
 import joblib
 from sqlalchemy import create_engine
@@ -44,10 +47,18 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
-    df['col'] = "1"
+    #categories_sum = df.groupby('col')[categories_names].sum()
 
-    categories_names = df.columns
-    categories_sum = df.groupby('col')[categories_names].sum()
+    #categories_names = df.columns
+    
+    df2 = df.copy()
+    df2.drop(columns=['id','message','genre','original'], inplace=True)
+    categories_sum = df2.sum()
+ 
+    #categories_sum.drop(labels=['id','message','genre','original'])
+    categories_names = df2.columns
+    
+    #df.drop(columns=['id','message','genre','original'])
 	
 
     # create visuals
