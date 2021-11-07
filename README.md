@@ -21,7 +21,7 @@ Following packages are required
 By using pip3 or yum as follows, install the following packages  
 
 pip3 install <package name>  
-yum install <package name>  
+yum install <package name>  	
 
 
 nltk  
