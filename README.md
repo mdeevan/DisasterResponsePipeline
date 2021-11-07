@@ -56,6 +56,6 @@ Accuracy of the classification is affected by the amount of data.
 Creating the model takes longer to complete, and further fine tuning of the model can help produce better classification.
 
 ### Sample Output
-![image](https://user-images.githubusercontent.com/4894031/140627527-070d6902-8138-4c4a-8a32-eee5c764f7d9.png)
+![image](https://user-images.githubusercontent.com/4894031/140642008-158fbe10-34c2-4544-9a7e-236f58b36ba3.png)
 
-    
+   
