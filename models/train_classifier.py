@@ -92,17 +92,19 @@ def build_model():
     
     """
     pipeline = Pipeline([
-            ('vect', CountVectorizer(tokenizer=tokenize, max_df=0.75)),
-            ('tfidf',TfidfTransformer(use_idf=True)),
-            ('clf', MultiOutputClassifier(RandomForestClassifier()))
+            ('vect', CountVectorizer(tokenizer=tokenize, ngram_range= (1, 2))),
+            ('tfidf',TfidfTransformer()),
+            ('clf', MultiOutputClassifier(RandomForestClassifier(bootstrap=False)))
     ])
-
+    print("params = ", pipeline.get_params().keys())
+    
     # vect__ngram_range': ((1, 1), (1, 2)),
     # 'vect__max_df': (0.5, 0.75, 1.0),
     # 'tfidf__use_idf': (True, False),
-
+    #    'clf__estimator__bootstrap': [False]
+    #    'vect__max_df': (0.5, 0.75, 1.0),
     parameters = {
-        'vect__ngram_range': ((1, 1), (1, 2)),
+        'tfidf__use_idf': (True, False),
     }
 
 

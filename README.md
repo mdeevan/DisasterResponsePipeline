@@ -21,7 +21,7 @@ Following packages are required
 By using pip3 or yum as follows, install the following packages  
 
 pip3 install <package name>  
-yum install <package name>  
+yum install <package name>  	
 
 
 nltk  
@@ -32,6 +32,24 @@ pandas
 seaborn  
 matplotlib  
 
+# project structure  
+- app  
+| - template  
+| |- master.html  # main page of web app  
+| |- go.html  # classification result page of web app  
+|- run.py  # Flask file that runs app  
+  
+- data  
+|- disaster_categories.csv  # data to process   
+|- disaster_messages.csv    # data to process  
+|- process_data.py          # python module to ready the data files, clean, merge and save to a DB on filesystem.  
+|- InsertDatabaseName.db    # database to save clean data to  
+  
+- models  
+|- train_classifier.py      # python module to train the model and save it as a pickle file  
+|- classifier.pkl  # saved model   
+  
+- README.md  
 
 
 ### Instructions:
